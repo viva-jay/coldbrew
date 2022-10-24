@@ -17,11 +17,28 @@ steps:
 #           '/scripts/script.js']
 
   # Build the container image
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/mock-server:$COMMIT_SHA', 'nginx:latest']
+
+  # Pull nginx image for cache
+  - name: gcr.io/cloud-builders/docker
+    entrypoint: bash
+    args:
+      - '-c'
+      - >-
+        docker pull gcr.io/cloud-marketplace/google/nginx:1.20
+        || exit 0
+
+  # Tag the image we pulled in the previous step as a cache.
+  - name: gcr.io/cloud-builders/docker
+    args: [
+        'build',
+        '-t', 'gcr.io/$PROJECT_ID/mock-server:$BRANCH_NAME',
+        '--cache-from', 'gcr.io/cloud-marketplace/google/nginx:1.20',
+        '.']
+
   # Push the container image to Container Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/mock-server:$COMMIT_SHA']
+  - name: gcr.io/cloud-builders/docker
+    args: ['push', 'gcr.io/$PROJECT_ID/mock-server:$BRANCH_NAME']
+
   # Deploy container image to Cloud Run
 #  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
 #    entrypoint: gcloud
@@ -33,5 +50,6 @@ steps:
 #      - 'gcr.io/$PROJECT_ID/SERVICE-NAME:$COMMIT_SHA'
 #      - '--region'
 #      - 'REGION'
+# store artifact
 images:
   - 'gcr.io/$PROJECT_ID/mock-server:$COMMIT_SHA'
