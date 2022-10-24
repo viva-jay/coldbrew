@@ -16,16 +16,18 @@ steps:
 #           'cloud',
 #           '/scripts/script.js']
 
-  - name: gcr.io/$PROJECT_ID/gcloud
-    args: [
-        'run', 'deploy', '$_SERVICE_NAME',
-        '--image','gcr.io/$PROJECT_ID/mock-server',
-        '--region','$_REGION'
-    ]
-# store artifact
-images:
-  - 'gcr.io/$PROJECT_ID/mock-server'
+#  - name: gcr.io/$PROJECT_ID/gcloud
 
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        gcloud run deploy ${_SERVICE_NAME}-$BUILD_ID \
+          --image gcr.io/$PROJECT_ID/mock-server \
+          --region ${_REGION} \
+          --ingress=internal \
+          --timeout=10s
 # arguments
 substitutions:
   _SERVICE_NAME: 'tiny-proxy'
