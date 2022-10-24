@@ -1,5 +1,7 @@
 steps:
   - name: gcr.io/$PROJECT_ID/docker-compose
+    env:
+      - 'K6_CLOUD_TOKEN=${_K6_TOKEN}'
     args: ['run',
            'k6',
            'run',
@@ -10,4 +12,5 @@ steps:
            '--no-setup',
            '--no-usage-report',
            '--quiet',
+           '--out cloud',
            '/scripts/script.js']
