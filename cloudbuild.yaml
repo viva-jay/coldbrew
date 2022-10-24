@@ -27,7 +27,7 @@ steps:
         '--region','$_REGION']
 # store artifact
 images:
-  - 'gcr.io/$PROJECT_ID/_SERVICE_NAME:$BRANCH_NAME'
+  - 'gcr.io/$PROJECT_ID/$_SERVICE_NAME:$BRANCH_NAME'
 
 # arguments
 substitutions:
