@@ -1,8 +1,8 @@
 steps:
   - name: gcr.io/$PROJECT_ID/docker-compose
     args:
+      - 'run k6'
       - 'run'
-      - 'k6'
       - '--no-connection-reuse'
       - '--insecure-skip-tls-verify'
       - '--no-teardown'
