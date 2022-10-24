@@ -12,5 +12,6 @@ steps:
            '--no-setup',
            '--no-usage-report',
            '--quiet',
-           '--out cloud',
+           '--out',
+           'cloud',
            '/scripts/script.js']
