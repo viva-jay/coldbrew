@@ -31,5 +31,5 @@ images:
 
 # arguments
 substitutions:
-  _SERVICE_NAME: 'mock-server'
-  _REGION: 'asia-northeast2'
+  _SERVICE_NAME:  'mock-server'
+  _REGION:  'asia-northeast2'
