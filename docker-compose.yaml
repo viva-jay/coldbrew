@@ -9,10 +9,12 @@ services:
     volumes:
       - ./scripts:/scripts
     command: >
-        run --no-connection-reuse
-            --insecure-skip-tls-verify
-            --no-teardown
-            --no-thresholds
-            --no-setup
-            --no-usage-report
-            --quiet
+        "run --no-connection-reuse \
+          --insecure-skip-tls-verify \
+          --no-teardown \
+          --no-thresholds \
+          --no-setup \
+          --no-usage-report \
+          --quiet \
+          --verbose \
+          --linger \"
