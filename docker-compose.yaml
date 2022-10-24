@@ -8,3 +8,5 @@ services:
       - "6565:6565"
     volumes:
       - ./scripts:/scripts
+    env_file:
+      - .env
