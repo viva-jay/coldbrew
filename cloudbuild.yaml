@@ -3,3 +3,11 @@ steps:
     args:
       - run
       - k6
+      - --no-connection-reuse
+      - --insecure-skip-tls-verify
+      - --no-teardown
+      - --no-thresholds
+      - --no-setup
+      - --no-usage-report
+      - --quiet
+      - /scripts/script.js

@@ -8,14 +8,3 @@ services:
       - "6565:6565"
     volumes:
       - ./scripts:/scripts
-    command: >
-        "run --no-connection-reuse \
-          --insecure-skip-tls-verify \
-          --no-teardown \
-          --no-thresholds \
-          --no-setup \
-          --no-usage-report \
-          --quiet \
-          --verbose \
-          --linger
-          /scripts/script.js"
