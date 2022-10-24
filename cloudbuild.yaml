@@ -27,6 +27,7 @@ steps:
           --image gcr.io/$PROJECT_ID/mock-server \
           --region ${_REGION} \
           --ingress=internal \
+          --port=80 \
           --timeout=10s
 # arguments
 substitutions:
