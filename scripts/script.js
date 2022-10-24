@@ -2,6 +2,12 @@ import http from 'k6/http';
 import { check } from "k6";
 
 export let options = {
+    ext: {
+        loadimpact: {
+            projectID: 3606293,
+            name: "streaming to cloud"
+        }
+    },
     duration: '1s',
     vus: 1,
 
