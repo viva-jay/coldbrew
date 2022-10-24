@@ -16,19 +16,17 @@ steps:
 #           'cloud',
 #           '/scripts/script.js']
 
-  # Deploy container image to Cloud Run
-  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
-    entrypoint: gcloud
-    args: ['run', 'deploy',
-        '$_SERVICE_NAME',
-        '--image','gcr.io/$PROJECT_ID/$_SERVICE_NAME:latest',
-        '--region','$_REGION']
-    timeout: 10s
+  - name: gcr.io/$PROJECT_ID/gcloud
+    args: [
+        'run', 'deploy', '$_SERVICE_NAME',
+        '--image','gcr.io/$PROJECT_ID/mock-server',
+        '--region','$_REGION'
+    ]
 # store artifact
 images:
-  - 'gcr.io/$PROJECT_ID/$_SERVICE_NAME:latest'
+  - 'gcr.io/$PROJECT_ID/mock-server'
 
 # arguments
 substitutions:
-  _SERVICE_NAME:  'mock-server'
-  _REGION:  'asia-northeast2'
+  _SERVICE_NAME: 'tiny-proxy'
+  _REGION: 'asia-northeast2'
