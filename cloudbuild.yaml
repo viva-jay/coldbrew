@@ -16,38 +16,20 @@ steps:
 #           'cloud',
 #           '/scripts/script.js']
 
-  # Build the container image
-
-  # Pull nginx image for cache
-  - name: gcr.io/cloud-builders/docker
-    entrypoint: bash
-    args:
-      - '-c'
-      - >-
-        docker pull gcr.io/cloud-marketplace/google/nginx:1.20
-        || exit 0
-  # Tag the image we pulled in the previous step as a cache.
-  - name: gcr.io/cloud-builders/docker
-    args: [
-        tag,
-        'gcr.io/cloud-marketplace/google/nginx:1.20',
-        'gcr.io/$PROJECT_ID/mock-server:$BRANCH_NAME']
-
-  # Push the container image to Container Registry
-  - name: gcr.io/cloud-builders/docker
-    args: ['push', 'gcr.io/$PROJECT_ID/mock-server:$BRANCH_NAME']
-
   # Deploy container image to Cloud Run
-#  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-#    entrypoint: gcloud
-#    args:
-#      - 'run'
-#      - 'deploy'
-#      - 'SERVICE-NAME'
-#      - '--image'
-#      - 'gcr.io/$PROJECT_ID/SERVICE-NAME:$COMMIT_SHA'
-#      - '--region'
-#      - 'REGION'
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    timeout: 10s
+    args: [
+        'run',
+        'deploy,','SERVICE-NAME',
+        '--image','gcr.io/$PROJECT_ID/$_SERVICE_NAME:$BRANCH_NAME',
+        '--region','$_REGION']
 # store artifact
 images:
-  - 'gcr.io/$PROJECT_ID/mock-server:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/_SERVICE_NAME:$BRANCH_NAME'
+
+# arguments
+substitutions:
+_SERVICE_NAME: docker_image_name # docker image name
+_REGION: asia-northeast2
