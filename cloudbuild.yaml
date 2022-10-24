@@ -19,15 +19,14 @@ steps:
   # Deploy container image to Cloud Run
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     entrypoint: gcloud
-    args: [
-        'run', 'deploy,',
+    args: ['run', 'deploy',
         '$_SERVICE_NAME',
-        '--image','gcr.io/$PROJECT_ID/$_SERVICE_NAME:$BRANCH_NAME',
+        '--image','gcr.io/$PROJECT_ID/$_SERVICE_NAME',
         '--region','$_REGION']
     timeout: 10s
 # store artifact
 images:
-  - 'gcr.io/$PROJECT_ID/$_SERVICE_NAME:$BRANCH_NAME'
+  - 'gcr.io/$PROJECT_ID/$_SERVICE_NAME'
 
 # arguments
 substitutions:
