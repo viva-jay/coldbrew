@@ -1,7 +1,7 @@
 steps:
   - name: gcr.io/$PROJECT_ID/docker-compose
     args: ['run',
-           'K6_CLOUD_TOKEN=${_K6_CLOUD_TOKEN}'
+           'K6_CLOUD_TOKEN=${_K6_CLOUD_TOKEN}',
            'k6',
            'run',
            '--no-connection-reuse',
