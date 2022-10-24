@@ -21,8 +21,8 @@ steps:
     entrypoint: gcloud
     timeout: 10s
     args: [
-        'run',
-        'deploy,','SERVICE-NAME',
+        'run', 'deploy,',
+        '_SERVICE_NAME',
         '--image','gcr.io/$PROJECT_ID/$_SERVICE_NAME:$BRANCH_NAME',
         '--region','$_REGION']
 # store artifact
