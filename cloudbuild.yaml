@@ -1,4 +1,5 @@
 steps:
-  - name: gcr.io/$PROJECT_ID/remote-builder
-    env:
-      - COMMAND=ls -la
+  - name: gcr.io/$PROJECT_ID/docker-compose
+    args:
+      - run
+      - k6

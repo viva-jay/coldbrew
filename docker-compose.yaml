@@ -1,3 +1,10 @@
-helloworld:
-  image: ubuntu
-  command: /bin/echo 'Hello world'
+version: '3.4'
+services:
+  k6:
+    image: grafana/k6:latest
+    container_name: k6
+    privileged: true
+    ports:
+      - "6565:6565"
+    volumes:
+      - ./scripts:/scripts
