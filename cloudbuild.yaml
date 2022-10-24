@@ -31,5 +31,5 @@ images:
 
 # arguments
 substitutions:
-_SERVICE_NAME: docker_image_name # docker image name
-_REGION: asia-northeast2
+  _SERVICE_NAME: docker_image_name # docker image name
+  _REGION: asia-northeast2
