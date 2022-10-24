@@ -9,7 +9,7 @@ services:
     volumes:
       - ./scripts:/scripts
     command: >
-        "k6 run --no-connection-reuse \
+        "run --no-connection-reuse \
           --insecure-skip-tls-verify \
           --no-teardown \
           --no-thresholds \
@@ -17,5 +17,5 @@ services:
           --no-usage-report \
           --quiet \
           --verbose \
-          --linger \
+          --linger
           /scripts/script.js"
