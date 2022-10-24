@@ -31,9 +31,8 @@ steps:
   - name: gcr.io/cloud-builders/docker
     args: [
         tag,
-        '-t', 'gcr.io/$PROJECT_ID/mock-server:$BRANCH_NAME',
-        '--cache-from', 'gcr.io/cloud-marketplace/google/nginx:1.20',
-        'gcr.io/cloud-marketplace/google/nginx:1.20']
+        'gcr.io/cloud-marketplace/google/nginx:1.20',
+        'gcr.io/$PROJECT_ID/mock-server:$BRANCH_NAME']
 
   # Push the container image to Container Registry
   - name: gcr.io/cloud-builders/docker
