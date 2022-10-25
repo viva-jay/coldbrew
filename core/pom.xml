@@ -72,9 +72,9 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>${jib-maven-plugin.version}</version>
                 <configuration>
-                    <from>
-                        <image>openjdk:11</image>
-                    </from>
+<!--                    <from>-->
+<!--                        <image>openjdk:11</image>-->
+<!--                    </from>-->
                     <!--                    <to>-->
                     <!--                        <image>gcr.io/$PROJECT_ID/${project.artifactId}</image>-->
                     <!--                    </to>-->
@@ -84,6 +84,8 @@
                     <container>
                         <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
                     </container>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
         </plugins>
