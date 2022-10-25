@@ -34,13 +34,13 @@ steps:
     args:
       - '-c'
       - |
-        gcloud compute instances create-with-container ${_SERVICE_NAME}-$BUILD_ID --quiet \
+        gcloud compute instances create-with-container mock-server-1 mock-server-2 --quiet \
               --zone=us-west1-b \
               --machine-type=e2-micro \
               --image-project=cos-cloud \
               --image-family=cos-97-lts \
               --container-image=gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME \
-              --container-mount-host-path=host-path=/var/nginx.conf,mount-path=/etc/nginx/nginx.conf,mode=ro \
+              --container-mount-host-path=host-path=/var/nginx/,mount-path=/etc/nginx/,mode=ro \
               --container-restart-policy=always \
               --tags ${_SERVICE_NAME}-test
     waitFor: ['build-nginx']
