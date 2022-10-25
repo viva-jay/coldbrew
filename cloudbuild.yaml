@@ -17,7 +17,7 @@ steps:
 #           '/scripts/script.js']
 
 #  - name: gcr.io/$PROJECT_ID/gcloud
-  - name: gcr.io/$PROJECT_ID/mvn
+  - name: gcr.io/$PROJECT_ID/mvn:gcloud
     entrypoint: bash
     args:
       - -c
@@ -25,37 +25,55 @@ steps:
         env
         ps -l
 
-  # build nginx docker image
-#  - name: 'gcr.io/$PROJECT_ID/docker'
-#    args: [
-#        'build',
-#        '-t', 'gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME',
-#        '.'
-#    ]
-#    id: 'build-nginx'
-  # build app docker image
+  # build docker image(nginx)
+  - name: 'gcr.io/$PROJECT_ID/docker'
+    args: [
+        'build',
+        '-t', 'gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME',
+        '.'
+    ]
+    id: 'build-nginx'
+
+  # build docker image(app)
   - name: gcr.io/$PROJECT_ID/mvn
     args: ['compile', 'jib:build','-Dimage=eu.gcr.io/$PROJECT_ID/${_SERVICE_NAME}']
     dir: 'core'
-#  # deploy nginx instances
-#  - name: 'gcr.io/cloud-builders/gcloud'
-#    entrypoint: /bin/bash
-#    args:
-#      - '-c'
-#      - |
-#        gcloud compute instances create-with-container mock-server-1 mock-server-2 --quiet \
-#              --zone=us-west1-b \
-#              --machine-type=e2-micro \
-#              --image-project=cos-cloud \
-#              --image-family=cos-97-lts \
-#              --container-image=gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME \
-#              --container-restart-policy=always \
-#              --tags ${_SERVICE_NAME}-test
-#    waitFor: ['build-nginx']
+    id: 'build-app'
+
+  # deploy app instances
+  - name: gcr.io/$PROJECT_ID/gcloud
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        gcloud compute instances create-with-container ${_SERVICE_NAME}-vm --quiet \
+              --zone=us-west1-b \
+              --machine-type=e2-micro \
+              --image-project=cos-cloud \
+              --image-family=cos-97-lts \
+              --container-image=gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME \
+              --container-restart-policy=always \
+              --tags ${_SERVICE_NAME}-test
+    waitFor: ['build-app']
+
+  # deploy nginx instances
+  - name: gcr.io/$PROJECT_ID/gcloud
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        gcloud compute instances create-with-container mock-server-1 mock-server-2 --quiet \
+              --zone=us-west1-b \
+              --machine-type=e2-micro \
+              --image-project=cos-cloud \
+              --image-family=cos-97-lts \
+              --container-image=gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME \
+              --container-restart-policy=always \
+              --tags ${_SERVICE_NAME}-test
+    waitFor: ['build-nginx']
 
 # store artifact
-#images: ['gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME']
+images: ['gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME']
 # arguments
 substitutions:
   _SERVICE_NAME: 'tiny-proxy'
-  _REGION: 'asia-northeast2'
