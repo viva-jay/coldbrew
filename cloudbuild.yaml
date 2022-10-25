@@ -54,6 +54,8 @@ steps:
 #          --port=80 \
 #          --min-instances=2 \
 #          --timeout=10s
+# store artifact
+images: ['gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME']
 # arguments
 substitutions:
   _SERVICE_NAME: 'tiny-proxy'
