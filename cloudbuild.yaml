@@ -17,17 +17,13 @@ steps:
 #           '/scripts/script.js']
 
 #  - name: gcr.io/$PROJECT_ID/gcloud
-  - name: gcr.io/cloud-builders/mvn:3.5.0-jdk-8
+  - name: gcr.io/$PROJECT_ID/mvn:3.5.0-jdk-8
     entrypoint: bash
     args:
       - -c
       - |
-        whoami
-        echo $$HOME
-        pwd
-        ls -la
-        cat $$HOME/.docker/config.json
-        set
+        env
+        ps -l
 
   # build nginx docker image
 #  - name: 'gcr.io/$PROJECT_ID/docker'
@@ -38,8 +34,8 @@ steps:
 #    ]
 #    id: 'build-nginx'
   # build app docker image
-  - name: 'gcr.io/$PROJECT_ID/mvn'
-    args: ['compile', 'jib:build']
+  - name: gcr.io/$PROJECT_ID/mvn:3.5.0-jdk-8
+    args: ['compile', 'jib:build','-Dimage=eu.gcr.io/$PROJECT_ID/${_SERVICE_NAME}']
     dir: 'core'
 #  # deploy nginx instances
 #  - name: 'gcr.io/cloud-builders/gcloud'
