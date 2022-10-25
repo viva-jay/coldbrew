@@ -42,7 +42,7 @@ steps:
               --container-image=gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME \
               --container-mount-host-path=host-path=/var/nginx.conf,mount-path=/etc/nginx/nginx.conf,mode=ro \
               --container-restart-policy=always \
-              --tags $INSTANCE_NAME-test
+              --tags ${_SERVICE_NAME}-test
     waitFor: ['build-nginx']
 
 #  - name: 'gcr.io/cloud-builders/gcloud'
