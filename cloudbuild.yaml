@@ -26,21 +26,24 @@ steps:
         '-t', 'gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME',
         '.'
     ]
-#  - name: 'gcr.io/cloud-builders/gcloud'
-#    entrypoint: /bin/bash
-#    args:
-#      - '-c'
-#      - |
-#        gcloud compute instances create-with-container ${_SERVICE_NAME}-$BUILD_ID --quiet \
-#              --zone=us-west1-b \
-#              --machine-type=e2-micro \
-#              --image-project=cos-cloud \
-#              --image-family=cos-97-lts \
-#              --container-image=<<parameters.container-image>> \
-#              --container-mount-host-path=host-path=./,mount-path=/etc/nginx/ \
-#              --container-restart-policy=always \
-#              --metadata-from-file=user-data=${HOME}/.cloud-init/exporter/cloud-config.yaml \
-#              --tags mock-server
+    id: 'build-nginx'
+  # build app docker image
+  # deploy nginx instance
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        gcloud compute instances create-with-container ${_SERVICE_NAME}-$BUILD_ID --quiet \
+              --zone=us-west1-b \
+              --machine-type=e2-micro \
+              --image-project=cos-cloud \
+              --image-family=cos-97-lts \
+              --container-image=gcr.io/$PROJECT_ID/nginx:$BRANCH_NAME \
+              --container-mount-host-path=host-path=/var/nginx.conf,mount-path=/etc/nginx/nginx.conf,mode=ro \
+              --container-restart-policy=always \
+              --tags $INSTANCE_NAME-test
+    waitFor: ['build-nginx']
 
 #  - name: 'gcr.io/cloud-builders/gcloud'
 #    entrypoint: /bin/bash
