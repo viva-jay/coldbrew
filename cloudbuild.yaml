@@ -15,8 +15,7 @@ steps:
     args:
       - '-c'
       - |
-        docker pull registry.hub.docker.com/grafana/k6:latest
-        || exit 0
+        docker pull registry.hub.docker.com/grafana/k6:latest || exit 0
 
   # build and tag docker image(k6)
   - name: gcr.io/cloud-builders/docker
