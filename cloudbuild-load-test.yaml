@@ -1,0 +1,49 @@
+steps:
+  # after every run instance run k6
+#  - name: gcr.io/$PROJECT_ID/docker-compose
+#    env:
+#      - 'K6_CLOUD_TOKEN=${_K6_CLOUD_TOKEN}'
+#    args: ['run',
+#             'k6',
+#             'run',
+#             '--no-connection-reuse',
+#             '--insecure-skip-tls-verify',
+#             '--no-teardown',
+#             '--no-thresholds',
+#             '--no-setup',
+#             '--no-usage-report',
+#             '--quiet',
+#             '--out',
+#             'cloud',
+#             '/scripts/script.js']
+
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        gcloud compute instances create-with-container ${_SERVICE_NAME}-vm --quiet \
+              --zone=us-west1-b \
+              --machine-type=e2-micro \
+              --image-project=cos-cloud \
+              --image-family=cos-97-lts \
+              --container-image=gcr.io/$PROJECT_ID/${_SERVICE_NAME} \
+              --container-restart-policy=never \
+              --tags ${_NETWORK_TAG} \
+              --container-env=K6_CLOUD_TOKEN=${_K6_CLOUD_TOKEN},SREQ_DURATION_THRESHOLDS=300 \
+              --container-arg="run" \
+              --container-arg="--no-connection-reuse" \
+              --container-arg="--insecure-skip-tls-verify" \
+              --container-arg="---no-thresholds" \
+              --container-arg="---no-teardown" \
+              --container-arg="--out cloud" \
+              --container-arg="/scripts/script.js" \
+
+# store artifact
+images:
+  - 'gcr.io/$PROJECT_ID/k6'
+
+# arguments
+substitutions:
+  _SERVICE_NAME: 'k6'
+  _NETWORK_TAG: 'load-test'
