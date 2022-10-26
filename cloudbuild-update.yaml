@@ -37,7 +37,7 @@ steps:
     args:
       - '-c'
       - |
-        gcloud compute ssh ${_MOCK_SERVER}-vm-1 \
+        gcloud compute ssh 673449402901-compute@${_MOCK_SERVER}-vm-1 \
         --project $PROJECT_ID \
         --zone us-west1-b \
         --command="docker images |grep -v REPOSITORY|awk '{print $1}'|xargs -L1 docker pull" -- -t
