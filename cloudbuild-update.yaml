@@ -37,10 +37,8 @@ steps:
     args:
       - '-c'
       - |
-        gcloud compute ssh 673449402901-compute@${_MOCK_SERVER}-vm-1 \
-        --project $PROJECT_ID \
-        --zone us-west1-b \
-        --command="docker images |grep -v REPOSITORY|awk '{print $1}'|xargs -L1 docker pull" -- -t
+        gcloud compute instances update-container ${_MOCK_SERVER}-vm-1 ${_MOCK_SERVER}-vm-2
+        --container-image=gcr.io/$PROJECT_ID/${_MOCK_SERVER} \
 
 # store artifact
 images:
