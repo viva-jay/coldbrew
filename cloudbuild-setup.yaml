@@ -48,13 +48,15 @@ steps:
       - '-c'
       - |
         gcloud compute instances create-with-container ${_SERVICE_NAME}-vm --quiet \
-              --zone=${_ZONE} \
+              --zone=${_SERVICE_ZONE} \
               --machine-type=${_MACHINE_TYPE} \
               --image-project=cos-cloud \
               --image-family=cos-97-lts \
               --container-image=gcr.io/$PROJECT_ID/${_SERVICE_NAME} \
               --container-restart-policy=always \
-              --tags=${_NETWORK_TAG}
+              --tags=${_NETWORK_TAG} \
+              --no-address
+    waitFor: ['-']
 #    waitFor: ['build-app']
 
 #   deploy and run nginx instances
@@ -64,13 +66,15 @@ steps:
       - '-c'
       - |
         gcloud compute instances create-with-container ${_MOCK_SERVER}-vm-1 ${_MOCK_SERVER}-vm-2 --quiet \
-              --zone=${_ZONE} \
+              --zone=${_SERVICE_ZONE} \
               --machine-type=${_MACHINE_TYPE} \
               --image-project=cos-cloud \
               --image-family=cos-97-lts \
               --container-image=gcr.io/$PROJECT_ID/${_MOCK_SERVER} \
               --container-restart-policy=always \
-              --tags=${_NETWORK_TAG}
+              --tags=${_NETWORK_TAG} \
+              --no-address
+    waitFor: ['-']
 #    waitFor: ['build-nginx']
 
 # store artifact
@@ -82,5 +86,5 @@ substitutions:
   _SERVICE_NAME: 'tiny-proxy'
   _NETWORK_TAG: 'load-test'
   _MOCK_SERVER: 'mock-http'
-  _ZONE: 'us-central1-c'
+  _SERVICE_ZONE: 'us-central1-c'
   _MACHINE_TYPE: 'e2-standard-2'
