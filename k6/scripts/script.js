@@ -17,7 +17,7 @@ export let options = {
 };
 
 export default function () {
-    let response = http.get("http://www.google.com");
+    let response = http.get("http://tiny-proxy-vm");
     let length = response.body.length
     check(length, { "body length ": (v) => v >= 0});
 };
