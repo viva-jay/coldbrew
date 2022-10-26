@@ -1,0 +1,74 @@
+steps:
+  # build docker image(k6)
+  - name: gcr.io/cloud-builders/docker
+    args: [
+        'build',
+        '-t', 'gcr.io/$PROJECT_ID/k6',
+        '--cache-from', 'gcr.io/$PROJECT_ID/k6',
+        '.'
+    ]
+    dir: 'k6'
+    waitFor: ["-"]
+
+  # build docker image(nginx)
+  - name: gcr.io/cloud-builders/docker
+    args: [
+        'build',
+        '-t', 'gcr.io/$PROJECT_ID/${_MOCK_SERVER}',
+        '--cache-from', 'gcr.io/$PROJECT_ID/${_MOCK_SERVER}',
+        '.'
+    ]
+    dir: 'nginx'
+    id: 'build-nginx'
+    waitFor: ["-"]
+
+  # build docker image(app)
+  - name: gcr.io/cloud-builders/mvn
+    args: [
+        'compile', 'jib:build','-Dimage=eu.gcr.io/$PROJECT_ID/${_SERVICE_NAME}'
+    ]
+    dir: 'core'
+    id: 'build-app'
+    waitFor: ["-"]
+
+  # update container
+  - name: gcr.io/$PROJECT_ID/remote-builder
+    env:
+      # Use Container Optimized OS
+      # https://cloud.google.com/container-optimized-os/docs/
+      - INSTANCE_NAME=${_MOCK_SERVER}-vm-1
+      - USERNAME=${_USER_NAME}
+      # Run a script from the local build context in a Docker container
+      - COMMAND=docker restart
+
+# store artifact
+images:
+  - 'gcr.io/$PROJECT_ID/${_MOCK_SERVER}'
+  - 'gcr.io/$PROJECT_ID/k6'
+
+# arguments
+substitutions:
+  _SERVICE_NAME: 'tiny-proxy'
+  _NETWORK_TAG: 'load-test'
+  _MOCK_SERVER: 'mock-http'
+  _USER_NAME: $(gcloud projects describe $PROJECT --format 'value(projectNumber)')
+
+
+# after every run instance run k6
+
+#  - name: gcr.io/$PROJECT_ID/docker-compose
+#    env:
+#      - 'K6_CLOUD_TOKEN=${_K6_CLOUD_TOKEN}'
+#    args: ['run',
+#           'k6',
+#           'run',
+#           '--no-connection-reuse',
+#           '--insecure-skip-tls-verify',
+#           '--no-teardown',
+#           '--no-thresholds',
+#           '--no-setup',
+#           '--no-usage-report',
+#           '--quiet',
+#           '--out',
+#           'cloud',
+#           '/scripts/script.js']
