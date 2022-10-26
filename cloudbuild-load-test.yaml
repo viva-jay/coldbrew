@@ -26,7 +26,7 @@ steps:
     args:
       - '-c'
       - |
-        gcloud compute scp --zone="us-central1-c" --recurse nginx/ nfs-client:/mnt/disks/data/nginx/
+        gcloud compute scp --zone="us-central1-c" --recurse nginx/ 673449402901@nfs-client:/mnt/disks/data/nginx/
 
 #    gcloud compute scp  --zone="us-central1-c" --recurse ~/foo-folder/ gcp-instance-name:~/
 
