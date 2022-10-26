@@ -39,7 +39,7 @@ steps:
               --image-project=cos-cloud \
               --image-family=cos-97-lts \
               --container-image=gcr.io/$PROJECT_ID/${_MOCK_SERVER} \
-              --disk=boot=no,device-name=disk-1,mode=rw,name=disk-1
+              --disk=boot=no,device-name=disk-1,name=disk-1
               --container-restart-policy=never \
               --tags=${_NETWORK_TAG}
 
