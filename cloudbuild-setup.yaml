@@ -58,20 +58,20 @@ steps:
     waitFor: ['build-app']
 
   # deploy and run nginx instances
-  - name: gcr.io/cloud-builders/gcloud
-    entrypoint: /bin/bash
-    args:
-      - '-c'
-      - |
-        gcloud compute instances create-with-container ${_MOCK_SERVER}-vm-1 ${_MOCK_SERVER}-vm-2 --quiet \
-              --zone=us-west1-b \
-              --machine-type=e2-micro \
-              --image-project=cos-cloud \
-              --image-family=cos-97-lts \
-              --container-image=gcr.io/$PROJECT_ID/${_MOCK_SERVER} \
-              --container-restart-policy=never \
-              --tags=${_NETWORK_TAG}
-    waitFor: ['build-nginx']
+#  - name: gcr.io/cloud-builders/gcloud
+#    entrypoint: /bin/bash
+#    args:
+#      - '-c'
+#      - |
+#        gcloud compute instances create-with-container ${_MOCK_SERVER}-vm-1 ${_MOCK_SERVER}-vm-2 --quiet \
+#              --zone=us-west1-b \
+#              --machine-type=e2-micro \
+#              --image-project=cos-cloud \
+#              --image-family=cos-97-lts \
+#              --container-image=gcr.io/$PROJECT_ID/${_MOCK_SERVER} \
+#              --container-restart-policy=never \
+#              --tags=${_NETWORK_TAG}
+#    waitFor: ['build-nginx']
 
 # store artifact
 images:

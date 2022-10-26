@@ -3,9 +3,7 @@ package v2;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.kqueue.KQueueChannelOption;
-import io.netty.channel.kqueue.KQueueEventLoopGroup;
-import io.netty.channel.kqueue.KQueueServerSocketChannel;
+import io.netty.channel.nio.*;
 
 public class ProxyApplication {
     static final int LOCAL_PORT = Integer.parseInt(System.getProperty("localPort", "80"));

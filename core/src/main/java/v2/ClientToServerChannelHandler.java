@@ -3,9 +3,9 @@ package v2;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
-import io.netty.channel.kqueue.KQueueChannelOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import io.netty.channel.nio.*;
 
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicInteger;
