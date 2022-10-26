@@ -5,7 +5,8 @@ steps:
         'run',
         '--rm',
         '--volume', 'scripts:/scripts',
-        '--env-file','.env',
+        '--env','K6_CLOUD_TOKEN=${_K6_CLOUD_TOKEN}',
+        '--env','SREQ_DURATION_THRESHOLDS=300',
         'gcr.io/$PROJECT_ID/k6:latest',
         'run',
              '--no-connection-reuse',
@@ -19,6 +20,9 @@ steps:
              'cloud',
              '/scripts/script.js']
     dir: 'k6'
+
+  - name: gcr.io/cloud-builders/gcloud
+    args: ['scp']
 
 #  - name: gcr.io/cloud-builders/gcloud
 #    entrypoint: /bin/bash
