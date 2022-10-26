@@ -1,61 +1,37 @@
 steps:
-   # after every run instance run k6
-#  - name: gcr.io/cloud-builders/docker
-#    args: [
-#        'run',
-#        '--rm',
-#        '--volume', 'scripts:/scripts',
-#        '--env','K6_CLOUD_TOKEN=${_K6_CLOUD_TOKEN}',
-#        '--env','SREQ_DURATION_THRESHOLDS=300',
-#        'gcr.io/$PROJECT_ID/k6:latest',
-#        'run',
-#             '--no-connection-reuse',
-#             '--insecure-skip-tls-verify',
-#             '--no-teardown',
-#             '--no-thresholds',
-#             '--no-setup',
-#             '--no-usage-report',
-#             '--quiet',
-#             '--out',
-#             'cloud',
-#             '/scripts/script.js'
-#    ]
-#    dir: 'k6'
-#  - name: gcr.io/cloud-builders/gcloud
-#    entrypoint: /bin/bash
-#    args:
-#      - '-c'
-#      - |
-#        gcloud compute scp --zone="us-central1-c" --recurse nginx/ 673449402901@nfs-client:/mnt/disks/nginx/
-  #   deploy and run nginx instances
-  - name: gcr.io/cloud-builders/gcloud
-    entrypoint: /bin/bash
-    args:
-      - '-c'
-      - |
-        gcloud compute instances create-with-container ${_MOCK_SERVER}-vm-3 --quiet \
-              --zone=us-central1-c \
-              --machine-type=e2-micro \
-              --image-project=cos-cloud \
-              --image-family=cos-97-lts \
-              --container-image=gcr.io/$PROJECT_ID/${_MOCK_SERVER} \
-              --disk=boot=no,device-name=disk-1,name=disk-1 \
-              --container-restart-policy=never \
-              --tags=${_NETWORK_TAG}
-
-#    gcloud compute scp  --zone="us-central1-c" --recurse ~/foo-folder/ gcp-instance-name:~/
+#    after every run instance run k6
+  - name: gcr.io/cloud-builders/docker
+    args: [
+        'run',
+        '--rm',
+        '--volume', 'scripts:/scripts',
+        '--env','K6_CLOUD_TOKEN=${_K6_CLOUD_TOKEN}',
+        '--env','SREQ_DURATION_THRESHOLDS=300',
+        'gcr.io/$PROJECT_ID/k6:latest',
+        'run',
+             '--no-connection-reuse',
+             '--insecure-skip-tls-verify',
+             '--no-teardown',
+             '--no-thresholds',
+             '--no-setup',
+             '--no-usage-report',
+             '--quiet',
+             '--out',
+             'cloud',
+             '/scripts/script.js'
+    ]
 
 #  - name: gcr.io/cloud-builders/gcloud
 #    entrypoint: /bin/bash
 #    args:
 #      - '-c'
 #      - |
-#        gcloud compute instances create-with-container ${_SERVICE_NAME}-vm --quiet \
+#        gcloud compute instances create-with-container ${_SERVICE}-vm --quiet \
 #              --zone=us-west1-b \
 #              --machine-type=e2-micro \
 #              --image-project=cos-cloud \
 #              --image-family=cos-97-lts \
-#              --container-image=gcr.io/$PROJECT_ID/${_SERVICE_NAME} \
+#              --container-image=gcr.io/$PROJECT_ID/${_SERVICE} \
 #              --container-restart-policy=never \
 #              --tags ${_NETWORK_TAG} \
 #              --container-env=K6_CLOUD_TOKEN=${_K6_CLOUD_TOKEN},SREQ_DURATION_THRESHOLDS=300 \
@@ -67,48 +43,7 @@ steps:
 #              --container-arg="--out=cloud" \
 #              --container-arg="/scripts/script.js"
 
-# arguments
 substitutions:
-#  _SERVICE_NAME: 'k6'
-#  _NETWORK_TAG: 'load-test'
-  _SERVICE_NAME: 'tiny-proxy'
-  _NETWORK_TAG: 'load-test'
-  _MOCK_SERVER: 'mock-http'
-
-#
-#  gcloud compute disks create disk-1 --project=phrasal-bivouac-366409 --type=pd-balanced --size=20GB --zone=us-central1-c
-#
-#
-#
-#  gcloud compute instances create-with-container nfs-client
-#  --project=phrasal-bivouac-366409
-#  --zone=us-central1-c
-#  --machine-type=e2-medium
-#  --network-interface=network-tier=PREMIUM,subnet=default
-#  --maintenance-policy=MIGRATE
-#  --provisioning-model=STANDARD
-#  --service-account=673449402901-compute@developer.gserviceaccount.com
-#  --scopes=https://www.googleapis.com/auth/cloud-platform
-#  --tags=http-server
-#  --image=projects/cos-cloud/global/images/cos-stable-101-17162-40-16
-#  --boot-disk-size=10GB
-#  --boot-disk-type=pd-balanced
-#  --boot-disk-device-name=nfs-client
-#  --container-image=gcr.io/google-containers/busybox
-#  --container-restart-policy=on-failure
-#  --container-privileged
-#  --container-mount-disk=mode=rw,mount-path=/mnt/share,name=disk-1,partition=0
-#  --disk=boot=no,device-name=disk-1,mode=rw,name=disk-1
-#  --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --labels=container-vm=cos-stable-101-17162-40-16
-#
-#
-#
-#  gcloud compute instances create-with-container mytestvm1 \
-#  --zone=europe-west3-c \
-#  --container-image=gcr.io/google-containers/mycontainer \
-#  --container-privileged \
-#  --network default \
-#  --subnet default \
-#  --create-disk name=test-data,device-name=test-data,auto-delete=yes,size=20GB,type=pd-ssd \
-#  --container-mount-host-path=mount-path=/mnt/disks/data,host-path=/home/myhomedir/,mode=rw \
-#  --service-account=my_service_account@developer.gserviceaccount.com
+  _SERVICE: 'k6'
+options:
+  machineType: 'E2_HIGHCPU_8'
