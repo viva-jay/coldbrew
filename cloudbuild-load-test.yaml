@@ -34,14 +34,10 @@ steps:
               --container-arg="run" \
               --container-arg="--no-connection-reuse" \
               --container-arg="--insecure-skip-tls-verify" \
-              --container-arg="---no-thresholds" \
-              --container-arg="---no-teardown" \
+              --container-arg="--no-thresholds" \
+              --container-arg="--no-teardown" \
               --container-arg="--out cloud" \
               --container-arg="/scripts/script.js" \
-
-# store artifact
-images:
-  - 'gcr.io/$PROJECT_ID/k6'
 
 # arguments
 substitutions:
