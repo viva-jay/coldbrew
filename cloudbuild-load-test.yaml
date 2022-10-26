@@ -1,28 +1,34 @@
 steps:
    # after every run instance run k6
-  - name: gcr.io/cloud-builders/docker
-    args: [
-        'run',
-        '--rm',
-        '--volume', 'scripts:/scripts',
-        '--env','K6_CLOUD_TOKEN=${_K6_CLOUD_TOKEN}',
-        '--env','SREQ_DURATION_THRESHOLDS=300',
-        'gcr.io/$PROJECT_ID/k6:latest',
-        'run',
-             '--no-connection-reuse',
-             '--insecure-skip-tls-verify',
-             '--no-teardown',
-             '--no-thresholds',
-             '--no-setup',
-             '--no-usage-report',
-             '--quiet',
-             '--out',
-             'cloud',
-             '/scripts/script.js']
-    dir: 'k6'
-
+#  - name: gcr.io/cloud-builders/docker
+#    args: [
+#        'run',
+#        '--rm',
+#        '--volume', 'scripts:/scripts',
+#        '--env','K6_CLOUD_TOKEN=${_K6_CLOUD_TOKEN}',
+#        '--env','SREQ_DURATION_THRESHOLDS=300',
+#        'gcr.io/$PROJECT_ID/k6:latest',
+#        'run',
+#             '--no-connection-reuse',
+#             '--insecure-skip-tls-verify',
+#             '--no-teardown',
+#             '--no-thresholds',
+#             '--no-setup',
+#             '--no-usage-report',
+#             '--quiet',
+#             '--out',
+#             'cloud',
+#             '/scripts/script.js'
+#    ]
+#    dir: 'k6'
   - name: gcr.io/cloud-builders/gcloud
-    args: ['scp']
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        gcloud compute scp --zone="us-central1-c" --recurse nginx/ nfs-client:/mnt/disks/data/nginx/
+
+#    gcloud compute scp  --zone="us-central1-c" --recurse ~/foo-folder/ gcp-instance-name:~/
 
 #  - name: gcr.io/cloud-builders/gcloud
 #    entrypoint: /bin/bash
