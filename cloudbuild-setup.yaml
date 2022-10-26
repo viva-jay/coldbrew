@@ -53,8 +53,8 @@ steps:
               --image-project=cos-cloud \
               --image-family=cos-97-lts \
               --container-image=gcr.io/$PROJECT_ID/${_SERVICE_NAME} \
-              --container-restart-policy=never
-              --tags ${_NETWORK_TAG}
+              --container-restart-policy=never \
+              --tags=${_NETWORK_TAG}
     waitFor: ['build-app']
 
   # deploy and run nginx instances
@@ -69,8 +69,8 @@ steps:
               --image-project=cos-cloud \
               --image-family=cos-97-lts \
               --container-image=gcr.io/$PROJECT_ID/${_MOCK_SERVER} \
-              --container-restart-policy=never
-              --tags ${_NETWORK_TAG}
+              --container-restart-policy=never \
+              --tags=${_NETWORK_TAG}
     waitFor: ['build-nginx']
 
 # store artifact
