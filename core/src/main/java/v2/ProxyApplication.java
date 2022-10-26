@@ -3,11 +3,12 @@ package v2;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.*;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class ProxyApplication {
     static final int LOCAL_PORT = Integer.parseInt(System.getProperty("localPort", "80"));
-    static final String REMOTE_HOST = System.getProperty("remoteHost", "mock-http-1");
+    static final String REMOTE_HOST = System.getProperty("remoteHost", "mock-http-vm-1");
     static final int REMOTE_PORT = Integer.parseInt(System.getProperty("remotePort", "80"));
 
     public static void main(String[] args) throws Exception {
@@ -31,9 +32,9 @@ public class ProxyApplication {
 
                     .childHandler(new ProxyServerInitializer(REMOTE_HOST, new int[]{80}))
                     .childOption(ChannelOption.AUTO_READ, false)
-                    .childOption(ChannelOption.SO_KEEPALIVE,false)
+                    .childOption(ChannelOption.SO_KEEPALIVE, false)
                     .childOption(ChannelOption.SO_RCVBUF, 65536)
-                    .childOption(ChannelOption.SO_SNDBUF,65536)
+                    .childOption(ChannelOption.SO_SNDBUF, 65536)
 //                    .childOption(ChannelOption.)
 //                    .childOption(KQueueChannelOption.TCP_NODELAY, true)
                     .bind(LOCAL_PORT).sync().channel().closeFuture().sync();
