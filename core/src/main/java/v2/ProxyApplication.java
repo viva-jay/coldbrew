@@ -8,9 +8,9 @@ import io.netty.channel.kqueue.KQueueEventLoopGroup;
 import io.netty.channel.kqueue.KQueueServerSocketChannel;
 
 public class ProxyApplication {
-    static final int LOCAL_PORT = Integer.parseInt(System.getProperty("localPort", "9999"));
-    static final String REMOTE_HOST = System.getProperty("remoteHost", "localhost");
-    static final int REMOTE_PORT = Integer.parseInt(System.getProperty("remotePort", "8081"));
+    static final int LOCAL_PORT = Integer.parseInt(System.getProperty("localPort", "80"));
+    static final String REMOTE_HOST = System.getProperty("remoteHost", "mock-http-1");
+    static final int REMOTE_PORT = Integer.parseInt(System.getProperty("remotePort", "80"));
 
     public static void main(String[] args) throws Exception {
         int cpu = Runtime.getRuntime().availableProcessors();
