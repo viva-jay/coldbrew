@@ -4,7 +4,7 @@ steps:
     args: [
         'run',
         '--rm',
-        '-v scripts:/scripts',
+        '-v ./scripts:/scripts',
         'gcr.io/$PROJECT_ID/k6:latest',
         'run',
              '--no-connection-reuse',
