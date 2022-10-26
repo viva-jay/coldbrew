@@ -40,7 +40,7 @@ public class ClientToServerChannelHandler extends ChannelInboundHandlerAdapter {
         b.group(inboundChannel.eventLoop())
                 .channel(context.channel().getClass())
                 .handler(new ServerToClientConnectionHandler(inboundChannel))
-                .option(KQueueChannelOption.AUTO_READ, false)
+                .option(ChannelOption.AUTO_READ, false)
                 .option(ChannelOption.SO_KEEPALIVE,false)
                 .option(ChannelOption.SO_RCVBUF, 65536)
                 .option(ChannelOption.SO_SNDBUF,65536);
