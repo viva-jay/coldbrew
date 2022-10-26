@@ -51,7 +51,7 @@ substitutions:
   _SERVICE_NAME: 'tiny-proxy'
   _NETWORK_TAG: 'load-test'
   _MOCK_SERVER: 'mock-http'
-  _USER_NAME: $(gcloud projects describe $PROJECT --format 'value(projectNumber)')
+  _USER_NAME: '673449402901-compute'
 
 
 # after every run instance run k6
