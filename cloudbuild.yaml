@@ -17,14 +17,14 @@ steps:
 #           '/scripts/script.js']
 
   # set firewall-rules
-  - name: gcr.io/$PROJECT_ID/gcloud
-    entrypoint: /bin/bash
-    args:
-      - '-c'
-      - |
-        gcloud compute firewall-rules create http-inbound \
-        --allow tcp:80 \
-        --target-tags ${_NETWORK_TAG}
+#  - name: gcr.io/$PROJECT_ID/gcloud
+#    entrypoint: /bin/bash
+#    args:
+#      - '-c'
+#      - |
+#        gcloud compute firewall-rules create http-inbound \
+#        --allow tcp:80 \
+#        --target-tags ${_NETWORK_TAG}
 
 #  # pull docker image(k6)
 #  - name: gcr.io//docker
