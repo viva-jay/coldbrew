@@ -21,12 +21,27 @@ steps:
 #             '/scripts/script.js'
 #    ]
 #    dir: 'k6'
+#  - name: gcr.io/cloud-builders/gcloud
+#    entrypoint: /bin/bash
+#    args:
+#      - '-c'
+#      - |
+#        gcloud compute scp --zone="us-central1-c" --recurse nginx/ 673449402901@nfs-client:/mnt/disks/nginx/
+  #   deploy and run nginx instances
   - name: gcr.io/cloud-builders/gcloud
     entrypoint: /bin/bash
     args:
       - '-c'
       - |
-        gcloud compute scp --zone="us-central1-c" --recurse nginx/ 673449402901@nfs-client:/mnt/disks/nginx/
+        gcloud compute instances create-with-container ${_MOCK_SERVER}-vm-3 --quiet \
+              --zone=us-west1-b \
+              --machine-type=e2-micro \
+              --image-project=cos-cloud \
+              --image-family=cos-97-lts \
+              --container-image=gcr.io/$PROJECT_ID/${_MOCK_SERVER} \
+              --disk=boot=no,device-name=disk-1,mode=rw,name=disk-1
+              --container-restart-policy=never \
+              --tags=${_NETWORK_TAG}
 
 #    gcloud compute scp  --zone="us-central1-c" --recurse ~/foo-folder/ gcp-instance-name:~/
 
@@ -54,8 +69,11 @@ steps:
 
 # arguments
 substitutions:
-  _SERVICE_NAME: 'k6'
+#  _SERVICE_NAME: 'k6'
+#  _NETWORK_TAG: 'load-test'
+  _SERVICE_NAME: 'tiny-proxy'
   _NETWORK_TAG: 'load-test'
+  _MOCK_SERVER: 'mock-http'
 
 #
 #  gcloud compute disks create disk-1 --project=phrasal-bivouac-366409 --type=pd-balanced --size=20GB --zone=us-central1-c
