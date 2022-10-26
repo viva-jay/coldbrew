@@ -35,7 +35,7 @@ steps:
   # build docker image(app)
   - name: gcr.io/cloud-builders/mvn:gcloud
     args: [
-        'compile', 'jib:build','-Dimage=eu.gcr.io/$PROJECT_ID/${_SERVICE_NAME}'
+        'compile', 'jib:build','-Dimage=gcr.io/$PROJECT_ID/${_SERVICE_NAME}'
     ]
     dir: 'core'
     id: 'build-app'
