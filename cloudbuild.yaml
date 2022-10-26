@@ -9,14 +9,15 @@ steps:
 #        --allow tcp:80 \
 #        --target-tags ${_NETWORK_TAG}
 
-  # pull docker image(k6)
+  # build docker image(k6)
   - name: gcr.io/cloud-builders/docker
-    entrypoint: /bin/bash
-    args:
-      - '-c'
-      - |
-        docker pull registry.hub.docker.com/grafana/k6:latest
-        docker tag registry.hub.docker.com/grafana/k6:latest gcr.io/$PROJECT_ID/k6
+    args: [
+        'build',
+        '-t', 'gcr.io/$PROJECT_ID/k6',
+        '--cache-from', 'gcr.io/$PROJECT_ID/k6',
+        '.'
+    ]
+    dir: 'k6'
 
   # build docker image(nginx)
   - name: gcr.io/cloud-builders/docker
@@ -56,12 +57,12 @@ steps:
     args:
       - '-c'
       - |
-        gcloud compute instances create-with-container ${_MOCK_SERVER}-1 ${_MOCK_SERVER}-2 --quiet \
+        gcloud compute instances create-with-container ${_MOCK_SERVER}-vm-1 ${_MOCK_SERVER}-vm-2 --quiet \
               --zone=us-west1-b \
               --machine-type=e2-micro \
               --image-project=cos-cloud \
               --image-family=cos-97-lts \
-              --container-image=gcr.io/$PROJECT_ID/{_MOCK_SERVER} \
+              --container-image=gcr.io/$PROJECT_ID/${_MOCK_SERVER} \
               --container-restart-policy=always \
               --tags ${_NETWORK_TAG}
     waitFor: ['build-nginx']
