@@ -36,8 +36,7 @@ steps:
               --container-arg="--insecure-skip-tls-verify" \
               --container-arg="--no-thresholds" \
               --container-arg="--no-teardown" \
-              --container-arg="--out cloud" \
-              --container-arg="/scripts/script.js" \
+              --container-arg="--out cloud /scripts/script.js"
 
 # arguments
 substitutions:
