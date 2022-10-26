@@ -34,7 +34,7 @@ steps:
       - '-c'
       - |
         gcloud compute instances create-with-container ${_MOCK_SERVER}-vm-3 --quiet \
-              --zone=us-west1-b \
+              --zone=us-central1-c \
               --machine-type=e2-micro \
               --image-project=cos-cloud \
               --image-family=cos-97-lts \
