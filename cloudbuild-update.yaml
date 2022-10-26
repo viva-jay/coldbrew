@@ -37,37 +37,16 @@ steps:
     args:
       - '-c'
       - |
-        gcloud compute instances update-container ${_MOCK_SERVER}-vm-1 ${_MOCK_SERVER}-vm-2
-        --container-image=gcr.io/$PROJECT_ID/${_MOCK_SERVER}:latest
+        gcloud compute instances update-container ${_MOCK_SERVER}-vm-1 ${_MOCK_SERVER}-vm-2 \
+        --container-image=gcr.io/$PROJECT_ID/${_MOCK_SERVER}
 
 # store artifact
 images:
-  - 'gcr.io/$PROJECT_ID/${_MOCK_SERVER}:latest'
-  - 'gcr.io/$PROJECT_ID/k6:latest'
+  - 'gcr.io/$PROJECT_ID/${_MOCK_SERVER}'
+  - 'gcr.io/$PROJECT_ID/k6'
 
 # arguments
 substitutions:
   _SERVICE_NAME: 'tiny-proxy'
   _NETWORK_TAG: 'load-test'
   _MOCK_SERVER: 'mock-http'
-  _USER_NAME: '673449402901-compute'
-
-
-# after every run instance run k6
-
-#  - name: gcr.io/$PROJECT_ID/docker-compose
-#    env:
-#      - 'K6_CLOUD_TOKEN=${_K6_CLOUD_TOKEN}'
-#    args: ['run',
-#           'k6',
-#           'run',
-#           '--no-connection-reuse',
-#           '--insecure-skip-tls-verify',
-#           '--no-teardown',
-#           '--no-thresholds',
-#           '--no-setup',
-#           '--no-usage-report',
-#           '--quiet',
-#           '--out',
-#           'cloud',
-#           '/scripts/script.js']
