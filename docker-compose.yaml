@@ -9,4 +9,4 @@ services:
     volumes:
       - ./scripts:/scripts
     env_file:
-      - .env
+      - k6/.env
