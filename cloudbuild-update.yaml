@@ -31,7 +31,7 @@ steps:
     id: 'build-app'
     waitFor: ["-"]
 
-  # deploy and run nginx instances
+  # update nginx instances
   - name: gcr.io/cloud-builders/gcloud
     entrypoint: /bin/bash
     args:
@@ -40,6 +40,29 @@ steps:
         gcloud compute instances update-container ${_MOCK_SERVER}-vm-1 \
         --zone=us-west1-b \
         --container-image=gcr.io/$PROJECT_ID/${_MOCK_SERVER}
+    waitFor: ['build-nginx']
+
+  # update nginx instances
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        gcloud compute instances update-container ${_MOCK_SERVER}-vm-2 \
+        --zone=us-west1-b \
+        --container-image=gcr.io/$PROJECT_ID/${_MOCK_SERVER}
+    waitFor: ['build-nginx']
+
+  # update app instances
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        gcloud compute instances update-container ${_SERVICE_NAME}-vm \
+        --zone=us-west1-b \
+        --container-image=gcr.io/$PROJECT_ID/${_SERVICE_NAME}
+    waitFor: ['build-app']
 
 # store artifact
 images:
