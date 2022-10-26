@@ -4,8 +4,6 @@ steps:
     args: [
         'run',
         '--rm',
-        '--env K6_CLOUD_TOKEN=${_K6_CLOUD_TOKEN}',
-        '--env SREQ_DURATION_THRESHOLDS=300',
         '-v scripts:/scripts',
         'gcr.io/$PROJECT_ID/k6:latest',
         'run',
