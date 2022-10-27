@@ -46,4 +46,4 @@ steps:
 substitutions:
   _SERVICE: 'k6'
 options:
-  machineType: 'E2_HIGHCPU_8'
+  workerPool: projects/phrasal-bivouac-366409/locations/us-central1/workerPools/gcb-workers-pool-e2
